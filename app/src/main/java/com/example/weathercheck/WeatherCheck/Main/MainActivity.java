@@ -1,12 +1,16 @@
 package com.example.weathercheck.WeatherCheck.Main;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
@@ -31,6 +35,8 @@ public class MainActivity extends AppCompatActivity implements MainView {
     RecyclerView recyclerView;
     CardView cardView;
     RealmResults<FinalWeather> results;
+    HomeAdapter homeAdapter;
+    SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,12 +71,13 @@ public class MainActivity extends AppCompatActivity implements MainView {
             weather.setTemp_min(finalWeather.getTemp_min());
             finalWeathers.add(weather);
         }
-        recyclerView.setAdapter(new HomeAdapter(finalWeathers, getApplicationContext(), new HomeAdapter.OnItemClickListener() {
+        homeAdapter = new HomeAdapter(finalWeathers, getApplicationContext(), new HomeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Long id) {
                 mainPresenter.goToDetails(MainActivity.this, WeatherDetailsActivity.class, id);
             }
-        }));
+        });
+        recyclerView.setAdapter(homeAdapter);
         super.onResume();
 
     }
@@ -83,6 +90,14 @@ public class MainActivity extends AppCompatActivity implements MainView {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_search, menu);
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        searchView = (SearchView) menu.findItem(R.id.action_search)
+                .getActionView();
+        searchView.setSearchableInfo(searchManager
+                .getSearchableInfo(getComponentName()));
+        searchView.setMaxWidth(Integer.MAX_VALUE);
+        searchView.setQueryHint("Search City ");
+        mainPresenter.search(searchView);
         return true;
     }
 
@@ -112,5 +127,23 @@ public class MainActivity extends AppCompatActivity implements MainView {
         Intent intent = new Intent(MainActivity.this, WeatherDetailsActivity.class);
         intent.putExtra("details", id);
         startActivity(intent);
+    }
+
+    @Override
+    public void search(SearchView searchView) {
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+
+                homeAdapter.getFilter().filter(newText);
+                return true;
+            }
+        });
     }
 }

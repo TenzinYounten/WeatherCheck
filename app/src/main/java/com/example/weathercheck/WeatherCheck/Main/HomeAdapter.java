@@ -9,24 +9,31 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.weathercheck.DomainModel.Example;
 import com.example.weathercheck.DomainModel.FinalWeather;
+import com.example.weathercheck.DomainModel.Weather;
 import com.example.weathercheck.R;
 import com.example.weathercheck.WeatherCheck.Adapter.WeatherAdapter;
 import com.example.weathercheck.WeatherCheck.WeatherDetails.WeatherDetailsActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmList;
 import io.realm.RealmResults;
 
-class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.WeatherHolder> {
+class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.WeatherHolder> implements Filterable {
     Context context;
     List<FinalWeather> finalWeathers;
+    List<FinalWeather> filteredWeathers;
+    List<FinalWeather> tempWeathers;
+
     private final OnItemClickListener listener;
 
     public interface OnItemClickListener {
@@ -37,6 +44,7 @@ class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.WeatherHolder> {
         this.context = mainActivity;
         this.finalWeathers = finalWeathers;
         this.listener = onItemClickListener;
+        this.tempWeathers = finalWeathers;
     }
 
     @NonNull
@@ -109,6 +117,43 @@ class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.WeatherHolder> {
     @Override
     public int getItemCount() {
         return finalWeathers.size();
+    }
+
+    @Override
+    public Filter getFilter() {
+
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+
+                String charString = charSequence.toString();
+
+                if (charString.isEmpty()) {
+                    finalWeathers = tempWeathers;
+                    filteredWeathers = finalWeathers;
+                } else {
+                    ArrayList<FinalWeather> tempWeather = new ArrayList<FinalWeather>();
+                    for (FinalWeather weather : finalWeathers) {
+                        if (weather.getName().toLowerCase().contains(charString) ) {
+
+                            tempWeather.add(weather);
+                        }
+                    }
+
+                    filteredWeathers = tempWeather;
+                }
+
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = filteredWeathers;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                finalWeathers = (ArrayList<FinalWeather>) filterResults.values;
+                notifyDataSetChanged();
+            }
+        };
     }
 
     public class WeatherHolder extends RecyclerView.ViewHolder {

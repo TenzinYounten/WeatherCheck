@@ -1,5 +1,6 @@
 package com.example.weathercheck.WeatherCheck.Main;
 
+import android.support.v7.widget.SearchView;
 import android.view.View;
 
 import com.example.weathercheck.WeatherCheck.WeatherDetails.WeatherDetailsActivity;
@@ -22,5 +23,9 @@ public class MainPresenter {
 
     public void goToDetails(MainActivity mainActivity, Class<WeatherDetailsActivity> weatherDetailsActivityClass, Long id) {
         mainView.goToDetails(mainActivity, weatherDetailsActivityClass,id);
+    }
+
+    public void search(SearchView searchView) {
+        mainView.search(searchView);
     }
 }
