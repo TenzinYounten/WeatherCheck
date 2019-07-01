@@ -1,9 +1,156 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<android.support.v7.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".WeatherCheck.WeatherDetails.WeatherDetailsActivity">
+    android:id="@+id/cardView"
+    android:layout_margin="10dp"
+    >
 
-</android.support.constraint.ConstraintLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#fff"
+        android:elevation="4dp"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:paddingBottom="5dp"
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:text="Name : "
+            android:textSize="24sp" />
+        <TextView
+            android:id="@+id/nameTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/name"
+            android:layout_above="@+id/temperature"
+            android:paddingBottom="5dp"
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/temperature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:layout_below="@+id/name"
+            android:text="Temperature : " />
+        <TextView
+            android:id="@+id/temperatureTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/temperature"
+            android:layout_above="@+id/tempMin"
+            android:text="sdfdsf"
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:fontFamily="sans-serif-condensed-medium"
+            />
+        <TextView
+            android:id="@+id/tempMin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/temperature"
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:text="Temperature Min. : " />
+        <TextView
+            android:id="@+id/tempMinTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/tempMin"
+            android:layout_above="@+id/tempMax"
+            android:text="sdfdsf"
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:fontFamily="sans-serif-condensed-medium"
+            />
+        <TextView
+            android:id="@+id/tempMax"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tempMin"
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:text="Temperature Max. : " />
+        <TextView
+            android:id="@+id/tempMaxTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/tempMax"
+            android:layout_above="@+id/latitude"
+            android:text="sdfdsf"
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:fontFamily="sans-serif-condensed-medium"
+            />
+        <TextView
+            android:id="@+id/latitude"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tempMax"
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:text="Latitude : " />
+        <TextView
+            android:id="@+id/latitudeTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/latitude"
+            android:layout_above="@+id/longitude"
+            android:text="sdfdsf"
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:fontFamily="sans-serif-condensed-medium"
+            />
+        <TextView
+            android:id="@+id/longitude"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/latitude"
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:text="Longitude : " />
+        <TextView
+            android:id="@+id/longitudeTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/longitude"
+            android:layout_above="@+id/speed"
+            android:text="sdfdsf"
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:fontFamily="sans-serif-condensed-medium"
+            />
+
+        <TextView
+            android:id="@+id/speed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/longitude"
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:text="Speed : " />
+
+        <TextView
+            android:id="@+id/speedTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/speed"
+            android:layout_below="@+id/longitudeTxt"
+            android:text="sdfdsf"
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:fontFamily="sans-serif-condensed-medium"
+            />
+
+
+
+    </RelativeLayout>
+
+
+</android.support.v7.widget.CardView>

@@ -104,7 +104,7 @@ public class AddCityPresenter implements SearchPresenterInterface{
                         }
                     }
                 })
-                .debounce(5, TimeUnit.SECONDS)
+                .debounce(1, TimeUnit.SECONDS)
                 .distinctUntilChanged()
                 .switchMap(new Function<String, ObservableSource<Example>>() {
                     @Override

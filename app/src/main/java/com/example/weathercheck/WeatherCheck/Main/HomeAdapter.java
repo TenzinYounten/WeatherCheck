@@ -33,17 +33,22 @@ class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.WeatherHolder> implem
     List<FinalWeather> finalWeathers;
     List<FinalWeather> filteredWeathers;
     List<FinalWeather> tempWeathers;
+    private ItemClickListener clickListener;
+    public interface ItemClickListener {
+        void onClick(View view, int position);
+    }
 
-    private final OnItemClickListener listener;
+    public void setClickListener(ItemClickListener itemClickListener) {
+        this.clickListener = itemClickListener;
+    }
 
     public interface OnItemClickListener {
         void onItemClick(Long id);
     }
 
-    public HomeAdapter(List<FinalWeather> finalWeathers, Context mainActivity, OnItemClickListener onItemClickListener) {
+    public HomeAdapter(List<FinalWeather> finalWeathers, Context mainActivity) {
         this.context = mainActivity;
         this.finalWeathers = finalWeathers;
-        this.listener = onItemClickListener;
         this.tempWeathers = finalWeathers;
     }
 
@@ -156,7 +161,7 @@ class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.WeatherHolder> implem
         };
     }
 
-    public class WeatherHolder extends RecyclerView.ViewHolder {
+    public class WeatherHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tvTitle, tvOverview, tvReleaseDate;
         Button button;
         long id;
@@ -167,14 +172,12 @@ class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.WeatherHolder> implem
             tvOverview = (TextView) v.findViewById(R.id.tvOverView);
             tvReleaseDate = (TextView) v.findViewById(R.id.tvReleaseDate);
             button = (Button) v.findViewById(R.id.add);
-
-            v.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    listener.onItemClick(id);
-                }
-            });
-
+            v.setTag(v);
+            v.setOnClickListener(this);
+        }
+        @Override
+        public void onClick(View v) {
+            if (clickListener != null) clickListener.onClick(v, getAdapterPosition());
         }
     }
 }

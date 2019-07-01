@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.weathercheck.DomainModel.FinalWeather;
 import com.example.weathercheck.WeatherCheck.AddCity.AddCityDialog;
@@ -28,7 +28,7 @@ import io.realm.Realm;
 import io.realm.RealmResults;
 
 
-public class MainActivity extends AppCompatActivity implements MainView {
+public class MainActivity extends AppCompatActivity implements MainView, HomeAdapter.ItemClickListener {
 
     MainPresenter mainPresenter;
     List<FinalWeather> finalWeathers;
@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         mainPresenter = new MainPresenter(this, new MainService());
+
     }
 
     @Override
@@ -71,15 +72,18 @@ public class MainActivity extends AppCompatActivity implements MainView {
             weather.setTemp_min(finalWeather.getTemp_min());
             finalWeathers.add(weather);
         }
-        homeAdapter = new HomeAdapter(finalWeathers, getApplicationContext(), new HomeAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(Long id) {
-                mainPresenter.goToDetails(MainActivity.this, WeatherDetailsActivity.class, id);
-            }
-        });
+        homeAdapter = new HomeAdapter(finalWeathers, getApplicationContext());
+        homeAdapter.setClickListener(this);
         recyclerView.setAdapter(homeAdapter);
         super.onResume();
 
+    }
+    @Override
+    public void onClick(View view, int position) {
+        final FinalWeather weather = finalWeathers.get(position);
+        Intent intent = new Intent(MainActivity.this, WeatherDetailsActivity.class);
+        intent.putExtra("details",weather.getName() );
+        startActivity(intent);
     }
 
     public void onActionClicked(View view) {
@@ -146,4 +150,6 @@ public class MainActivity extends AppCompatActivity implements MainView {
             }
         });
     }
+
+
 }

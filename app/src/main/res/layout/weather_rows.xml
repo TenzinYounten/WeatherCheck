@@ -54,6 +54,16 @@
             android:layout_toRightOf="@id/tvOverView"
             android:gravity="center"
             android:text="Delete" />
+       <!-- <Button
+            android:id="@+id/view"
+            android:layout_width="145dp"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/add"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="200dp"
+            android:layout_toRightOf="@id/tvOverView"
+            android:gravity="center"
+            android:text="View" />-->
 
     </RelativeLayout>
 

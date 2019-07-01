@@ -74,18 +74,22 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherH
 
             for (Example json : _weatherList) {
                 realm.beginTransaction();
-                Number maxId = realm.where(FinalWeather.class).max("id");
-                nextId = (maxId == null) ? 1 : maxId.intValue() + 1;
-                FinalWeather example = realm.createObject(FinalWeather.class);
-                example.name = json.getName();
-                example.temp = json.getMain().getTemp();
-                example.temp_min = json.getMain().getTempMin();
-                example.temp_max = json.getMain().getTempMax();
-                example.latitude = json.getCoord().getLat();
-                example.longitude = json.getCoord().getLon();
-                example.speed = json.getWind().getSpeed();
-                realm.commitTransaction();
-
+                FinalWeather weather = realm.where(FinalWeather.class).equalTo("name", json.getName()).findFirst();
+                if(weather != null){
+                    state = false;
+                } else {
+                    Number maxId = realm.where(FinalWeather.class).max("id");
+                    nextId = (maxId == null) ? 1 : maxId.intValue() + 1;
+                    FinalWeather example = realm.createObject(FinalWeather.class);
+                    example.name = json.getName();
+                    example.temp = json.getMain().getTemp();
+                    example.temp_min = json.getMain().getTempMin();
+                    example.temp_max = json.getMain().getTempMax();
+                    example.latitude = json.getCoord().getLat();
+                    example.longitude = json.getCoord().getLon();
+                    example.speed = json.getWind().getSpeed();
+                    realm.commitTransaction();
+                }
             }
         } catch (Exception e) {
             state = false;
@@ -94,7 +98,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherH
         if(state == true) {
             Toast.makeText(context,"Data Saved ....", Toast.LENGTH_LONG).show();
         } else {
-            Toast.makeText(context,"Data Not Saved ....", Toast.LENGTH_LONG).show();
+            Toast.makeText(context,"Data Not Saved or Duplicate data....", Toast.LENGTH_LONG).show();
         }
 
     }
