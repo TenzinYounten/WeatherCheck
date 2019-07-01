@@ -1,6 +1,7 @@
 package com.example.weathercheck.WeatherCheck.Main;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -15,6 +16,7 @@ import com.example.weathercheck.DomainModel.Example;
 import com.example.weathercheck.DomainModel.FinalWeather;
 import com.example.weathercheck.R;
 import com.example.weathercheck.WeatherCheck.Adapter.WeatherAdapter;
+import com.example.weathercheck.WeatherCheck.WeatherDetails.WeatherDetailsActivity;
 
 import java.util.List;
 
@@ -25,10 +27,16 @@ import io.realm.RealmResults;
 class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.WeatherHolder> {
     Context context;
     List<FinalWeather> finalWeathers;
+    private final OnItemClickListener listener;
 
-    public HomeAdapter(List<FinalWeather> finalWeathers, Context mainActivity) {
+    public interface OnItemClickListener {
+        void onItemClick(Long id);
+    }
+
+    public HomeAdapter(List<FinalWeather> finalWeathers, Context mainActivity, OnItemClickListener onItemClickListener) {
         this.context = mainActivity;
         this.finalWeathers = finalWeathers;
+        this.listener = onItemClickListener;
     }
 
     @NonNull
@@ -47,12 +55,15 @@ class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.WeatherHolder> {
         viewHolder.tvReleaseDate.setText("Latitude : " + finalWeathers.get(i).getLatitude() + " Longitude : "
                 + finalWeathers.get(i).getLongitude());
         final int j = i;
+        viewHolder.id = finalWeathers.get(i).getId();
         viewHolder.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 deleteWeather(finalWeathers.get(j), j);
             }
         });
+
+
     }
 
     private void deleteWeather(FinalWeather finalWeather, int j) {
@@ -103,6 +114,7 @@ class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.WeatherHolder> {
     public class WeatherHolder extends RecyclerView.ViewHolder {
         TextView tvTitle, tvOverview, tvReleaseDate;
         Button button;
+        long id;
 
         public WeatherHolder(View v) {
             super(v);
@@ -110,6 +122,13 @@ class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.WeatherHolder> {
             tvOverview = (TextView) v.findViewById(R.id.tvOverView);
             tvReleaseDate = (TextView) v.findViewById(R.id.tvReleaseDate);
             button = (Button) v.findViewById(R.id.add);
+
+            v.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onItemClick(id);
+                }
+            });
 
         }
     }

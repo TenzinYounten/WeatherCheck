@@ -2,6 +2,8 @@ package com.example.weathercheck.WeatherCheck.Main;
 
 import android.view.View;
 
+import com.example.weathercheck.WeatherCheck.WeatherDetails.WeatherDetailsActivity;
+
 import io.realm.Realm;
 
 public class MainPresenter {
@@ -16,5 +18,9 @@ public class MainPresenter {
 
     public void onFabClick(View view) {
         mainView.onFabClick(view);
+    }
+
+    public void goToDetails(MainActivity mainActivity, Class<WeatherDetailsActivity> weatherDetailsActivityClass, Long id) {
+        mainView.goToDetails(mainActivity, weatherDetailsActivityClass,id);
     }
 }
