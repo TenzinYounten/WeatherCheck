@@ -3,6 +3,7 @@ package com.example.weathercheck.WeatherCheck.Main;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,7 +42,7 @@ class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.WeatherHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull WeatherHolder viewHolder, int i) {
-        viewHolder.tvOverview.setText("" + finalWeathers.get(i).getName());
+        viewHolder.tvTitle.setText("" + finalWeathers.get(i).getName());
         viewHolder.tvOverview.setText("" + finalWeathers.get(i).getTemp());
         viewHolder.tvReleaseDate.setText("Latitude : " + finalWeathers.get(i).getLatitude() + " Longitude : "
                 + finalWeathers.get(i).getLongitude());
@@ -49,12 +50,12 @@ class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.WeatherHolder> {
         viewHolder.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                deleteWeather(finalWeathers.get(j));
+                deleteWeather(finalWeathers.get(j), j);
             }
         });
     }
 
-    private void deleteWeather(FinalWeather finalWeathers) {
+    private void deleteWeather(FinalWeather finalWeather, int j) {
         Realm realm = null;
         boolean state = true;
         Realm.init(context);
@@ -65,34 +66,38 @@ class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.WeatherHolder> {
 
             final RealmResults<FinalWeather> finalWeatherRealmResults = realm.where(FinalWeather.class).findAll();
 
-            FinalWeather finalWeather = finalWeatherRealmResults .where().equalTo("id",finalWeathers.getId()).findFirst();
+            FinalWeather weather = finalWeatherRealmResults .where().equalTo("id",finalWeather.getId()).findFirst();
 
-            if(finalWeather!=null){
+            if(weather!=null){
 
                 if (!realm.isInTransaction())
                 {
                     realm.beginTransaction();
                 }
 
-                finalWeather.deleteFromRealm();
+                weather.deleteFromRealm();
 
                 realm.commitTransaction();
             }
 
         } catch (Exception e) {
             state = false;
+            Log.e("Exception",""+e.toString());
         }
 
         if(state == true) {
+            finalWeathers.remove(j);
+            notifyItemRemoved(j);
             Toast.makeText(context,"Data Removed ....", Toast.LENGTH_LONG).show();
         } else {
+
             Toast.makeText(context,"Data Not Removed ....", Toast.LENGTH_LONG).show();
         }
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return finalWeathers.size();
     }
 
     public class WeatherHolder extends RecyclerView.ViewHolder {

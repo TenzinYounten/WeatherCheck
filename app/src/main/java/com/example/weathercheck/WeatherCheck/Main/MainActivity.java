@@ -56,7 +56,16 @@ public class MainActivity extends AppCompatActivity implements MainView {
         results.load();
         finalWeathers = new ArrayList<FinalWeather>();
         for(FinalWeather finalWeather: results) {
-            finalWeathers.add(finalWeather);
+            FinalWeather weather = new FinalWeather();
+            weather.setId(finalWeather.getId());
+            weather.setLatitude(finalWeather.getLatitude());
+            weather.setLongitude(finalWeather.getLongitude());
+            weather.setName(finalWeather.getName());
+            weather.setSpeed(finalWeather.getSpeed());
+            weather.setTemp(finalWeather.getTemp());
+            weather.setTemp_max(finalWeather.getTemp_min());
+            weather.setTemp_min(finalWeather.getTemp_min());
+            finalWeathers.add(weather);
         }
         adapter = new HomeAdapter(finalWeathers, getApplicationContext());
         recyclerView.setAdapter(adapter);
